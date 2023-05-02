@@ -1,18 +1,35 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+import { FiSearch } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 class Searchbar extends Component { 
+    static propTypes = {
+        onFormSubmit: PropTypes.func.isRequired,
+    };
+
     state = {
         searchQuery: '',
     }
 
     handleInputChange = (event) => { 
-        const searchValue = event.currentTarget.value;
+        const searchValue = event.currentTarget.value.toLowerCase();
         this.setState({ searchQuery: searchValue });
     }
 
     handleFormSubmit = (event) => { 
         event.preventDefault();
-        this.props.onSubmit(this.state.searchQuery);
+
+        const { searchQuery } = this.state;
+        const { onFormSubmit } = this.props;
+
+        if (searchQuery.trim() === "") { 
+            toast.warn("Enter your search query!");
+            return;
+        }
+
+        onFormSubmit(searchQuery);
         this.reset();
     }
 
@@ -21,45 +38,27 @@ class Searchbar extends Component {
     }
 
     render() {
-            return (
+        return (
             <header className="Searchbar">
-                    <form onSubmit={this.handleFormSubmit} className="SearchForm">
-                    <button type="submit" className="SearchForm-button">
-                        <span className="SearchForm-button-label">Search</span>
-                    </button>
+                <form onSubmit={this.handleFormSubmit} className="SearchForm">
+                <button type="submit" className="SearchForm-button">
+                    {/* <span className="SearchForm-button-label">Search</span> */}
+                    <FiSearch size={26} />
+                </button>
 
-                    <input
-                        onChange={this.handleInputChange}
-                        className="SearchForm-input"
-                        type="text"
-                        autocomplete="off"
-                        autofocus
-                        placeholder="Search images and photos"
-                    />
+                <input
+                    onChange={this.handleInputChange}
+                    value={this.state.searchQuery}
+                    className="SearchForm-input"
+                    type="text"
+                    autoComplete="off"
+                    autoFocus
+                    placeholder="Search images and photos"
+                />
                 </form>
             </header>
         )
     }
 }
-
-// function Searchbar() { 
-    // return (
-    //     <header className="Searchbar">
-    //         <form className="SearchForm">
-    //             <button type="submit" className="SearchForm-button">
-    //                 <span className="SearchForm-button-label">Search</span>
-    //             </button>
-
-    //             <input
-    //                 className="SearchForm-input"
-    //                 type="text"
-    //                 autocomplete="off"
-    //                 autofocus
-    //                 placeholder="Search images and photos"
-    //             />
-    //         </form>
-    //     </header>
-    // )
-// }
 
 export default Searchbar;

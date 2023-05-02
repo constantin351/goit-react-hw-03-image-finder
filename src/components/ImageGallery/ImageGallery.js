@@ -2,7 +2,7 @@ import ImageGalleryItem from "components/ImageGalleryItem";
 import PropTypes from "prop-types";
 
 
-function ImageGallery({ images }) { 
+function ImageGallery({ images, onImgClick }) { 
     return (
         <ul className="ImageGallery">
             {images.map(image => (
@@ -10,10 +10,7 @@ function ImageGallery({ images }) {
                     key={image.id}
                     webURL={image.webformatURL}
                     largeURL={image.largeImageURL}
-                    // number={contact.number}
-                    // onDeleteBtnClick={onDeleteBtnClick} // 1й вариант (см ContactListItem)
-                    // onDeleteBtnClick={() => onDeleteBtnClick(contact.id)}  // 2й вариант (см ContactListItem)
-                    // contactId={contact.id}
+                    onImgClick={onImgClick}
                 />
             ))               
             }
@@ -27,7 +24,7 @@ ImageGallery.propTypes = {
         webformatURL: PropTypes.string.isRequired,
         largeImageURL: PropTypes.string.isRequired,
     })),
-    // onDeleteBtnClick: PropTypes.func,
+    onImgClick: PropTypes.func.isRequired,
 };
 
 
